@@ -32,6 +32,10 @@ class AccountService(
         return accountRepository.findById(accountId).orElseThrow { InvalidAccountIdException("Account doesn't exist") }
     }
 
+    fun getAccounts(): List<Account> {
+        return accountRepository.findAll().toList()
+    }
+
     fun updateAccount(account: Account) {
         accountRepository.save(account)
     }

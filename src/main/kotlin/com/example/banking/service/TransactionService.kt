@@ -71,6 +71,10 @@ class TransactionService(
         return transaction
     }
 
+    fun getAccountTransactions(accountId: Long): List<Transaction> {
+        return transactionRepository.findByAccountId(accountId)
+    }
+
     private fun saveTransaction(accountId: Long, type: TransactionType, amount: BigDecimal): Transaction {
         val transaction = Transaction(
             accountId = accountId,

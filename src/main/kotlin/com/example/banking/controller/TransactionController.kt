@@ -39,4 +39,12 @@ class TransactionController(
         val transaction = transactionService.transfer(sourceAccountId, targetAccountId, transactionRequest)
         return ResponseEntity(transaction, HttpStatus.OK)
     }
+
+    @GetMapping("/{accountId}")
+    fun getAccountTransactions(
+        @PathVariable accountId: Long
+    ): ResponseEntity<List<Transaction>> {
+        val transactionList = transactionService.getAccountTransactions(accountId)
+        return ResponseEntity(transactionList, HttpStatus.OK)
+    }
 }
