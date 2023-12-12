@@ -10,18 +10,18 @@ import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
 @Service
-open class AccountService(
+class AccountService(
     private val accountRepository: AccountRepository,
     private val sha256Hashing: SHA256Hashing
 ) {
 
     @Transactional
     fun createAccount(accountRequest: AccountRequest): Account {
-        //val hashedPin = sha256Hashing.hashPin(accountRequest.pin)
+        val hashedPin = sha256Hashing.hashPin(accountRequest.pin)
 
         val account = Account(
             beneficiaryName = accountRequest.beneficiaryName,
-            pin = accountRequest.pin,
+            pin = hashedPin,
             balance = BigDecimal(0.0)
         )
 

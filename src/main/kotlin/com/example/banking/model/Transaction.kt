@@ -5,18 +5,18 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @Entity
-data class Transaction(
+class Transaction(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    val id: Long? = null,
+    var id: Long? = null,
     @Column(nullable = false)
-    val accountId: Long,
+    var accountId: Long,
     @Column(nullable = false)
-    val transactionType: TransactionType,
+    var transactionType: TransactionType,
     @Column(nullable = false)
-    val amount: BigDecimal,
+    var amount: BigDecimal,
     @Column(nullable = false)
-    val timestamp: LocalDateTime
+    var timestamp: LocalDateTime
 )
 
 enum class TransactionType {

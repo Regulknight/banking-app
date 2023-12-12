@@ -4,14 +4,14 @@ import jakarta.persistence.*
 import java.math.BigDecimal
 
 @Entity
-data class Account(
+class Account(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    val id: Long? = null,
+    var id: Long? = null,
     @Column(nullable = false)
-    val beneficiaryName: String,
+    var beneficiaryName: String,
     @Column(nullable = false)
-    val pin: String,
+    var pin: String,
     @Column(nullable = false)
     var balance: BigDecimal
 )
