@@ -1,6 +1,7 @@
 package com.example.banking.controller
 
 import com.example.banking.dto.TransactionRequest
+import com.example.banking.dto.TransactionResponse
 import com.example.banking.model.Transaction
 import com.example.banking.service.TransactionService
 import org.springframework.http.HttpStatus
@@ -16,18 +17,18 @@ class TransactionController(
     fun deposit(
         @PathVariable accountId: Long,
         @RequestBody transactionRequest: TransactionRequest
-    ): ResponseEntity<Transaction> {
-        val transaction = transactionService.deposit(accountId, transactionRequest)
-        return ResponseEntity(transaction, HttpStatus.OK)
+    ): ResponseEntity<TransactionResponse> {
+        transactionService.deposit(accountId, transactionRequest)
+        return ResponseEntity(TransactionResponse("Transaction processed successfully"), HttpStatus.OK)
     }
 
     @PostMapping("/{accountId}/withdraw")
     fun withdraw(
         @PathVariable accountId: Long,
         @RequestBody transactionRequest: TransactionRequest
-    ): ResponseEntity<Transaction> {
-        val transaction = transactionService.withdraw(accountId, transactionRequest)
-        return ResponseEntity(transaction, HttpStatus.OK)
+    ): ResponseEntity<TransactionResponse> {
+        transactionService.withdraw(accountId, transactionRequest)
+        return ResponseEntity(TransactionResponse("Transaction processed successfully"), HttpStatus.OK)
     }
 
     @PostMapping("/{sourceAccountId}/transfer/{targetAccountId}")
@@ -35,9 +36,9 @@ class TransactionController(
         @PathVariable sourceAccountId: Long,
         @PathVariable targetAccountId: Long,
         @RequestBody transactionRequest: TransactionRequest
-    ): ResponseEntity<Transaction> {
-        val transaction = transactionService.transfer(sourceAccountId, targetAccountId, transactionRequest)
-        return ResponseEntity(transaction, HttpStatus.OK)
+    ): ResponseEntity<TransactionResponse> {
+        transactionService.transfer(sourceAccountId, targetAccountId, transactionRequest)
+        return ResponseEntity(TransactionResponse("Transaction processed successfully"), HttpStatus.OK)
     }
 
     @GetMapping("/{accountId}")
