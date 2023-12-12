@@ -1,5 +1,7 @@
 package com.example.banking.utils
 
+import com.example.banking.exception.InvalidPinException
+import com.example.banking.model.Account
 import org.springframework.stereotype.Component
 import java.security.MessageDigest
 
@@ -12,6 +14,12 @@ open class SHA256Hashing() {
         return with(StringBuilder()) {
             hashedByteArray.forEach { b -> append(String.format("%02X", b))}
             toString()
+        }
+    }
+
+    fun validatePin(account: Account, pin: String) {
+        if (account.pin != hashPin(pin)) {
+            throw InvalidPinException("Invalid PIN")
         }
     }
 }

@@ -22,7 +22,7 @@ class TransactionService(
     @Synchronized
     fun deposit(accountId: Long, transactionRequest: TransactionRequest): Transaction {
         val account = accountService.getAccountById(accountId)
-        validatePin(account, transactionRequest.pin)
+        shA256Hashing.validatePin(account, transactionRequest.pin)
 
         val amount = transactionRequest.amount
         account.balance = account.balance + amount
@@ -35,7 +35,7 @@ class TransactionService(
     @Synchronized
     fun withdraw(accountId: Long, transactionRequest: TransactionRequest): Transaction {
         val account = accountService.getAccountById(accountId)
-        validatePin(account, transactionRequest.pin)
+        shA256Hashing.validatePin(account, transactionRequest.pin)
 
         val amount = transactionRequest.amount
         if (account.balance < amount) {
@@ -52,7 +52,7 @@ class TransactionService(
     @Synchronized
     fun transfer(sourceAccountId: Long, targetAccountId: Long, transactionRequest: TransactionRequest): Transaction {
         val sourceAccount = accountService.getAccountById(sourceAccountId)
-        validatePin(sourceAccount, transactionRequest.pin)
+        shA256Hashing.validatePin(sourceAccount, transactionRequest.pin)
 
         val targetAccount = accountService.getAccountById(targetAccountId)
 
@@ -67,7 +67,9 @@ class TransactionService(
         accountService.updateAccount(sourceAccount)
         accountService.updateAccount(targetAccount)
 
-        val transaction = saveTransaction(sourceAccountId, TransactionType.TRANSFER, amount)
+        val transaction = saveTransaction(sourceAccountId, TransactionType.TRANSFER, -amount)
+        saveTransaction(targetAccountId, TransactionType.TRANSFER, amount)
+
         return transaction
     }
 
@@ -85,9 +87,5 @@ class TransactionService(
         return transactionRepository.save(transaction)
     }
 
-    private fun validatePin(account: Account, pin: String) {
-        if (account.pin != shA256Hashing.hashPin(pin)) {
-            throw InvalidPinException("Invalid PIN")
-        }
-    }
+
 }
